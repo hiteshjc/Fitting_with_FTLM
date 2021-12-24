@@ -1,4 +1,4 @@
 This software was written by Anish Bhardwaj for performing SciPy fitting of Hamiltonian parameters.
 It calls a C++ code primarily written by Hitesh Changlani which does Finite Temperature Lanczos.
 
-Additional scripts are available on request from either author.
+Additional scripts are available on request from Anish Bhardwaj (ab12k@my.fsu.edu).
