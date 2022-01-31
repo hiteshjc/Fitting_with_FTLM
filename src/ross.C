@@ -30,20 +30,41 @@ void make_g_mats_with_h(double gxy, double gy, double gz, double hx, double hy, 
 	double gp=(sqrt(2.0)*gxy+ gz)/3.0;
 	double gm=-(gxy/sqrt(2.0) - gz)/3.0;
 
+        double h0x=(2*hx-hy-hz)/sqrt(6.0);
+        double h0y=(hy-hz)/sqrt(2.0);
+        double h0z=(hx+hy+hz)/sqrt(3.0);
+        
+	double h1x=(-hx-2*hy+hz)/sqrt(6.0);
+	double h1y=(-hx-hz)/sqrt(2.0);
+        double h1z=(hx-hy-hz)/sqrt(3.0);
+
+	double h2x=(hx-hy-2*hz)/sqrt(6.0);
+	double h2y=(-hx-hy)/sqrt(2.0);
+        double h2z=(-hx+hy-hz)/sqrt(3.0);
+
+        double h3x=(hx+hy+2.0*hz)/sqrt(6.0);
+        double h3y=(-hx+hy)/sqrt(2.0);
+	double h3z=(-hx-hy+hz)/sqrt(3.0);
+
+	double a0=0.5*gy*(h0y*h0y*h0y-3*h0x*h0x*h0y);
+	double a1=0.5*gy*(h1y*h1y*h1y-3*h1x*h1x*h1y);
+	double a2=0.5*gy*(h2y*h2y*h2y-3*h2x*h2x*h2y);
+	double a3=0.5*gy*(h3y*h3y*h3y-3*h3x*h3x*h3y);
+
 	gmat0(0,0)=gp;gmat0(0,1)=gm;gmat0(0,2)=gm;
-        gmat0(1,0)=gp;gmat0(1,1)=gm;gmat0(1,2)=gm;
-        gmat0(2,0)=gp;gmat0(2,1)=gm;gmat0(2,2)=gm;
+        gmat0(1,0)=gp;gmat0(1,1)=gm+a0;gmat0(1,2)=gm-a0;
+        gmat0(2,0)=gp;gmat0(2,1)=gm-a0;gmat0(2,2)=gm+a0;
 
-        gmat1(0,0)=gm;gmat1(0,1)=-gp;gmat1(0,2)=-gm;
+        gmat1(0,0)=gm+a1;gmat1(0,1)=-gp;gmat1(0,2)=-gm+a1;
         gmat1(1,0)=-gm;gmat1(1,1)=gp;gmat1(1,2)=gm;
-        gmat1(2,0)=-gm;gmat1(2,1)=gp;gmat1(2,2)=gm;
+        gmat1(2,0)=-gm+a1;gmat1(2,1)=gp;gmat1(2,2)=gm+a1;
 
-        gmat2(0,0)=gm;gmat2(0,1)=-gm;gmat2(0,2)=gp;
-        gmat2(1,0)=-gm;gmat2(1,1)=gm;gmat2(1,2)=-gp;
+        gmat2(0,0)=gm+a2;gmat2(0,1)=-gm+a2;gmat2(0,2)=gp;
+        gmat2(1,0)=-gm+a2;gmat2(1,1)=gm+a2;gmat2(1,2)=-gp;
         gmat2(2,0)=gm;gmat2(2,1)=-gm;gmat2(2,2)=gp;
 
-        gmat3(0,0)=gm;gmat3(0,1)=gm;gmat3(0,2)=-gp;
-        gmat3(1,0)=gm;gmat3(1,1)=gm;gmat3(1,2)=-gp;
+        gmat3(0,0)=gm+a3;gmat3(0,1)=gm-a3;gmat3(0,2)=-gp;
+        gmat3(1,0)=gm-a3;gmat3(1,1)=gm+a3;gmat3(1,2)=-gp;
         gmat3(2,0)=-gm;gmat3(2,1)=-gm;gmat3(2,2)=gp;
 
 	gmats.push_back(gmat0);
