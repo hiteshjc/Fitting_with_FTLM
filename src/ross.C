@@ -12,6 +12,46 @@ using namespace std;
 //                                 Ross's MODEL
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+void make_g_mats_with_h(double gxy, double gy, double gz, double hx, double hy, double hz, std::vector<RMatrix> &gmats)
+{
+
+        // Jan 30 2022, hx,hy,hz are ASSUMED to be in meV - see Patri, Hosoi, Ki for expression
+	gmats.clear();
+	RMatrix gmat0;
+	RMatrix gmat1;
+	RMatrix gmat2;
+	RMatrix gmat3;
+
+	gmat0.resize(3,3);
+	gmat1.resize(3,3);
+	gmat2.resize(3,3);
+	gmat3.resize(3,3);
+
+	double gp=(sqrt(2.0)*gxy+ gz)/3.0;
+	double gm=-(gxy/sqrt(2.0) - gz)/3.0;
+
+	gmat0(0,0)=gp;gmat0(0,1)=gm;gmat0(0,2)=gm;
+        gmat0(1,0)=gp;gmat0(1,1)=gm;gmat0(1,2)=gm;
+        gmat0(2,0)=gp;gmat0(2,1)=gm;gmat0(2,2)=gm;
+
+        gmat1(0,0)=gm;gmat1(0,1)=-gp;gmat1(0,2)=-gm;
+        gmat1(1,0)=-gm;gmat1(1,1)=gp;gmat1(1,2)=gm;
+        gmat1(2,0)=-gm;gmat1(2,1)=gp;gmat1(2,2)=gm;
+
+        gmat2(0,0)=gm;gmat2(0,1)=-gm;gmat2(0,2)=gp;
+        gmat2(1,0)=-gm;gmat2(1,1)=gm;gmat2(1,2)=-gp;
+        gmat2(2,0)=gm;gmat2(2,1)=-gm;gmat2(2,2)=gp;
+
+        gmat3(0,0)=gm;gmat3(0,1)=gm;gmat3(0,2)=-gp;
+        gmat3(1,0)=gm;gmat3(1,1)=gm;gmat3(1,2)=-gp;
+        gmat3(2,0)=-gm;gmat3(2,1)=-gm;gmat3(2,2)=gp;
+
+	gmats.push_back(gmat0);
+	gmats.push_back(gmat1);
+	gmats.push_back(gmat2);
+	gmats.push_back(gmat3);
+}
+
 void make_g_mats(double gxy,double gz, std::vector<RMatrix> &gmats)
 {
 	gmats.clear();
@@ -368,7 +408,7 @@ void ross_sym_setup(string filename,
                Spin_Half_Ross &ross)
 
 {    
-    double J1,J2,J3,J4,gxy,gz, hx,hy,hz;
+    double J1,J2,J3,J4,gxy,gy,gz,hx,hy,hz;
     bool found;
     string str_ret;
     std::vector< std::vector<int> > pairs;
@@ -392,6 +432,8 @@ void ross_sym_setup(string filename,
     if (found){J4=str_to_d(str_ret);} else{J4=0.0;}
     search_for(string("gxy"),filename,str_ret,found);
     if (found){gxy=str_to_d(str_ret);} else{gxy=0.0;}
+    search_for(string("gy"),filename,str_ret,found);
+    if (found){gy=str_to_d(str_ret);} else{gy=0.0;}
     search_for(string("gz"),filename,str_ret,found);
     if (found){gz=str_to_d(str_ret);} else{gz=0.0;}
     search_for(string("hx"),filename,str_ret,found);
@@ -426,7 +468,7 @@ void ross_sym_setup(string filename,
     search_for(string("k3"),filename,str_ret,found);
     if (found){k3=str_to_d(str_ret);} else{k3=0.0;}
 
-    ross.init(pairs,sublattice,J1,J2,J3,J4,gxy,gz,hx,hy,hz, t1,t2,t3,k1,k2,k3);
+    ross.init(pairs,sublattice,J1,J2,J3,J4,gxy,gy, gz,hx,hy,hz, t1,t2,t3,k1,k2,k3);
     cout<<ross.num_sites<<endl;
 }
 
