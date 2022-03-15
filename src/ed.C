@@ -452,7 +452,8 @@ void lanczos_sym(Ham &h,
 				int64_t location=locreps[news];
 				//outfile<<"location = "<<location<<endl;
 				//if (location!=-1) w[i]+=(hint*v_p[location]);
-				w[i]+=(hint*v_p[location]);
+				//w[i]+=(hint*v_p[location]); // HJC fixed error on 3/15/2022 - must be complex conjugate
+				w[i]+=(conj(hint)*v_p[location]);
 			}
 		 }
        }
@@ -623,7 +624,8 @@ void lanczos_sym_evec(Ham &h,
 				int64_t location=locreps[news];
 				//outfile<<"location = "<<location<<endl;
 				//if (location!=-1) w[i]+=(hint*v_p[location]);
-				w[i]+=(hint*v_p[location]);
+				//w[i]+=(hint*v_p[location]); // HJC fixed error on 3/15/2022 - must be complex conjugate
+				w[i]+=(conj(hint)*v_p[location]);
 			}
 		 }
        }
